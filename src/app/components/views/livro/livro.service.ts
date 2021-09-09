@@ -35,6 +35,11 @@ export class LivroService {
     return this.http.put<Livro>(url,livro);
   }
 
+  delete(id:String):Observable<Livro>{
+    const url = `${this.baseUrl}/livros/${id}`;
+    return this.http.delete<Livro>(url);
+  }
+
   mensagem(str:String):void{
     this.snakbar.open(`${str}`,'ok', {
       horizontalPosition: 'end',
