@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Livro } from './livro-read-all/livro.model';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -12,10 +12,34 @@ export class LivroService {
 
   baseUrl: String = environment.baseUrl;
 
-  constructor(private htt: HttpClient) { }
+  constructor(private http: HttpClient, private snakbar: MatSnackBar) { }
 
   findAll(id_cat:String):Observable<Livro[]>{
     const url = `${this.baseUrl}/livros?categoria=${id_cat}`;
-    return this.htt.get<Livro[]>(url);
+    return this.http.get<Livro[]>(url);
+  }
+
+  findById(id: String):Observable<Livro>{
+    const url = `${this.baseUrl}/livros/${id}`;
+    return this.http.get<Livro>(url);
+  }
+
+  create(livro:Livro,id_cat:String):Observable<Livro>{
+    const url = `${this.baseUrl}/livros?categoria=${id_cat}`;
+    return this.http.post<Livro>(url,livro);
+
+  }
+
+  update(livro:Livro):Observable<Livro>{
+    const url = `${this.baseUrl}/livros/${livro.id}`;
+    return this.http.put<Livro>(url,livro);
+  }
+
+  mensagem(str:String):void{
+    this.snakbar.open(`${str}`,'ok', {
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      duration: 3000
+    })
   }
 }
